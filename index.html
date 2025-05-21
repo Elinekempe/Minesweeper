@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="minesweeper">
+        <h1>Minesweeper</h1>
+        <div id="gameBoard"></div>
+        
+        <!-- Niveaus Knoppen -->
+        <div>
+            <button id="easyBtn">Easy</button>
+            <button id="mediumBtn">Medium</button>
+            <button id="hardBtn">Hard</button>
+        </div>
+
+        <audio id="winAudio" src="win.mp3" preload="auto"></audio>
+        <button id="restartBtn">Opnieuw starten</button>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+
+</body>
+</html>
