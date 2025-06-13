@@ -1,9 +1,17 @@
-let boardSize = 10;  // Het bord heeft altijd 10x10 cellen
-let mineCount = 20;  // Aantal mijnen voor standaard moeilijkheid (Easy)
+let boardSize = 10;  // Standaard bordgrootte
+let mineCount = 20;  // Standaard aantal mijnen
 let board = [];
 let revealedCells = 0;
 let isGameOver = false;
 const winAudio = document.getElementById('winAudio'); // Audio element voor win
+const loseAudio = document.getElementById('loseAudio'); // Audio element voor verlies
+
+// Pas de grid aan op basis van de boardSize
+function updateBoardGrid(size) {
+    const gameBoard = document.getElementById('gameBoard');
+    gameBoard.style.gridTemplateColumns = `repeat(${size}, 30px)`;
+    gameBoard.style.gridTemplateRows = `repeat(${size}, 30px)`;
+}
 
 // Maak het bord
 function createBoard() {
@@ -12,7 +20,8 @@ function createBoard() {
     isGameOver = false;
     const gameBoard = document.getElementById('gameBoard');
     gameBoard.innerHTML = '';
-    
+    updateBoardGrid(boardSize);
+
     // Maak een lege cel
     for (let row = 0; row < boardSize; row++) {
         const rowArr = [];
@@ -126,23 +135,22 @@ function flagCell(row, col) {
 function gameOver(isWin) {
     isGameOver = true;
     if (isWin) {
-        triggerConfetti(); // Start de confetti animatie vóór de win-melding
-        winAudio.play(); // Speel de win-audio af meteen
-        alert('Je hebt gewonnen!'); // Toon de winmelding gelijktijdig
+        triggerConfetti();
+        winAudio.play();
+        alert('Je hebt gewonnen!');
     } else {
+        loseAudio.play();
         alert('Game Over! Probeer het opnieuw.');
     }
-    setTimeout(createBoard, 1000); // Maak het bord opnieuw na 1 seconde
+    setTimeout(createBoard, 1000);
 }
-
 
 // Trigger de confetti animatie
 function triggerConfetti() {
-    // Confetti over het hele scherm
     confetti({
         particleCount: 300,
         spread: 360,
-        origin: { x: 0.5, y: 0.5 }, // Midden van het scherm
+        origin: { x: 0.5, y: 0.5 },
         colors: ['#ff0', '#f00', '#0f0', '#00f', '#ff00ff'],
     });
 
@@ -165,13 +173,14 @@ function triggerConfetti() {
 document.getElementById('restartBtn').addEventListener('click', createBoard);
 
 // Wijzig het niveau
-document.getElementById('easyBtn').addEventListener('click', () => setLevel(10, 10));
-document.getElementById('mediumBtn').addEventListener('click', () => setLevel(10, 20));  // Meer mijnen, zelfde bordgrootte
-document.getElementById('hardBtn').addEventListener('click', () => setLevel(10, 30));    // Meer mijnen, zelfde bordgrootte
+document.getElementById('easyBtn').addEventListener('click', () => setLevel(8, 10));     // 8x8, 10 mijnen
+document.getElementById('mediumBtn').addEventListener('click', () => setLevel(10, 20));  // 10x10, 20 mijnen
+document.getElementById('hardBtn').addEventListener('click', () => setLevel(12, 35));    // 12x12, 35 mijnen
 
 // Verander het niveau
 function setLevel(size, mines) {
-    mineCount = mines;  // Aantal mijnen aanpassen, grootte van het bord blijft 10x10
+    boardSize = size;
+    mineCount = mines;
     createBoard();
 }
 

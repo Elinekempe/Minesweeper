@@ -16,14 +16,18 @@ body {
 
 #minesweeper {
     text-align: center;
+    max-width: 95vw;
+    max-height: 95vh;
+    overflow: auto;
 }
 
 #gameBoard {
     display: grid;
-    grid-template-columns: repeat(10, 30px);
-    grid-template-rows: repeat(10, 30px);
+    /* grid-template-columns en rows worden nu via JS gezet */
     gap: 2px;
     margin: 20px auto;
+    justify-content: center;
+    align-items: center;
 }
 
 button {
@@ -33,7 +37,8 @@ button {
     border: none;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 20px;
+    margin-top: 10px;
+    margin-right: 10px;
 }
 
 button:hover {
@@ -50,6 +55,7 @@ button:hover {
     font-size: 14px;
     cursor: pointer;
     border: 1px solid #ccc;
+    position: relative;
 }
 
 .cell.revealed {
@@ -57,7 +63,17 @@ button:hover {
 }
 
 .cell.flagged {
-    background-color: #f1c40f;
+    background-color: #ddd; /* Zelfde als normale cel */
+}
+.cell.flagged::after {
+    content: "🚩";
+    position: absolute;
+    font-size: 18px;
+    line-height: 1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
 }
 
 .cell.mine {
@@ -66,22 +82,6 @@ button:hover {
 
 .cell.num {
     font-weight: bold;
-}
-
-/* Voeg dit toe onder je huidige CSS */
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    margin-right: 10px;
-}
-
-button:hover {
-    background-color: #45a049;
 }
 
 .winMessage {
