@@ -1,75 +1,91 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* Modern Minesweeper Design */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
 }
 
 #minesweeper {
+    background: rgba(255,255,255,0.95);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+    padding: 32px 28px 24px 28px;
     text-align: center;
-    max-width: 95vw;
-    max-height: 95vh;
-    overflow: auto;
+    min-width: 340px;
+}
+
+h1 {
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    font-size: 2.5rem;
+    color: #3a7bd5;
+    margin-bottom: 18px;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px #b0c4de55;
 }
 
 #gameBoard {
     display: grid;
-    /* grid-template-columns en rows worden nu via JS gezet */
-    gap: 2px;
-    margin: 20px auto;
+    gap: 5px;
+    margin: 24px auto 18px auto;
     justify-content: center;
     align-items: center;
+    background: #eaf6ff;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px #b0c4de33;
+    padding: 12px;
 }
 
 button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
+    background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+    color: #fff;
+    padding: 10px 26px;
     border: none;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    margin-right: 10px;
+    font-size: 1rem;
+    margin: 10px 8px 0 0;
+    box-shadow: 0 2px 8px #b0c4de33;
+    transition: background 0.2s, transform 0.1s;
 }
 
 button:hover {
-    background-color: #45a049;
+    background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%);
+    transform: translateY(-2px) scale(1.04);
 }
 
 .cell {
-    width: 30px;
-    height: 30px;
-    background-color: #ddd;
+    width: 36px;
+    height: 36px;
+    background: #f7fafc;
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
+    font-size: 1.1rem;
     cursor: pointer;
-    border: 1px solid #ccc;
+    border: 2px solid #b0c4de;
+    box-shadow: 0 1px 4px #b0c4de22;
     position: relative;
+    transition: background 0.15s, box-shadow 0.15s;
+    user-select: none;
 }
 
 .cell.revealed {
-    background-color: #f0f0f0;
+    background: #e3f6fc;
+    border: 2px solid #a0b8d8;
+    box-shadow: none;
 }
 
 .cell.flagged {
-    background-color: #ddd; /* Zelfde als normale cel */
+    background: #f7fafc;
 }
 .cell.flagged::after {
     content: "🚩";
     position: absolute;
-    font-size: 18px;
-    line-height: 1;
+    font-size: 1.3rem;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -77,30 +93,61 @@ button:hover {
 }
 
 .cell.mine {
-    background-color: red;
+    background: #ff6b6b;
+    color: #fff;
+    border: 2px solid #d7263d;
+    animation: minePop 0.3s;
+}
+@keyframes minePop {
+    0% { transform: scale(0.7);}
+    100% { transform: scale(1);}
 }
 
 .cell.num {
     font-weight: bold;
+    color: #3a7bd5;
+    text-shadow: 0 1px 2px #fff8;
 }
+
+.cell.num[data-num="1"] { color: #1976d2; }
+.cell.num[data-num="2"] { color: #388e3c; }
+.cell.num[data-num="3"] { color: #d32f2f; }
+.cell.num[data-num="4"] { color: #7b1fa2; }
+.cell.num[data-num="5"] { color: #ff8f00; }
+.cell.num[data-num="6"] { color: #0097a7; }
+.cell.num[data-num="7"] { color: #c2185b; }
+.cell.num[data-num="8"] { color: #455a64; }
 
 .winMessage {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: rgba(0, 255, 0, 0.7);
-    color: white;
-    font-size: 24px;
+    padding: 36px 48px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(8px);
+    color: #185a9d;
+    font-size: 2.2rem;
     font-weight: bold;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border-radius: 24px;
+    box-shadow: 0 0 48px #185a9d55;
     z-index: 999;
-    animation: fadeIn 1s ease-in-out;
+    animation: fadeIn 1s cubic-bezier(.42,0,.58,1);
+    letter-spacing: 1px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
 }
 
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+.winMessage .icon {
+    font-size: 3.5rem;
+    margin-bottom: 8px;
+    animation: pop 0.7s;
+}
+
+@keyframes pop {
+    0% { transform: scale(0.5);}
+    70% { transform: scale(1.2);}
+    100% { transform: scale(1);}
 }
