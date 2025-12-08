@@ -1,0 +1,57 @@
+@startuml
+skinparam actorStyle awesome
+left to right direction
+
+actor Speler
+actor Systeem
+
+rectangle "Minesweeper Game" {
+  usecase "Spel starten" as UC1
+  usecase "Moeilijkheid kiezen" as UC2
+  usecase "Cel openen" as UC3
+  usecase "Vlag plaatsen/verwijderen" as UC4
+  usecase "Spel herstarten" as UC5
+  usecase "Score bekijken" as UC6
+  
+  usecase "Winconditie detecteren" as UC7a
+  usecase "Verliesconditie detecteren" as UC7b
+  usecase "Win-melding tonen" as UC7win
+  usecase "Verlies-melding tonen" as UC7verlies
+  usecase "Explosiegeluid afspelen" as UC8a
+  usecase "Win-geluid afspelen" as UC8b
+  usecase "Confetti tonen" as UC9
+}
+
+Speler --> UC1
+Speler --> UC2
+Speler --> UC3
+Speler --> UC4
+Speler --> UC5
+Speler --> UC6
+
+UC3 --> UC7a : <<extend>> \n(als alle mijnen gevlagd)
+UC3 --> UC7b : <<extend>> \n(als mijn geopend)
+
+UC7a --> UC7win : <<include>>
+UC7win --> UC8b : <<include>>
+UC7win --> UC9 : <<include>>
+
+UC7b --> UC7verlies : <<include>>
+UC7verlies --> UC8a : <<include>>
+
+Systeem --> UC7win
+Systeem --> UC7verlies
+Systeem --> UC8a
+Systeem --> UC8b
+Systeem --> UC9
+
+' Notities voor duidelijkheid
+note top of UC7a
+  Triggers alleen bij winst
+  (geen geluid bij gewone cel)
+end note
+
+note top of UC8a
+  Alleen bij mijn-explosie
+end note
+@enduml

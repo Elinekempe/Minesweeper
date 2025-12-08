@@ -1,4 +1,4 @@
-/* Modern Minesweeper Design */
+/* Minesweeper Design */
 body {
     font-family: 'Segoe UI', 'Arial', sans-serif;
     background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
@@ -12,41 +12,71 @@ body {
     background: rgba(255,255,255,0.95);
     border-radius: 24px;
     box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
-    padding: 32px 28px 24px 28px;
+    padding: 24px 18px 18px 18px;
     text-align: center;
     min-width: 340px;
+    max-width: 98vw;
 }
 
 h1 {
     font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-size: 2.5rem;
+    font-size: 2.1rem;
     color: #3a7bd5;
-    margin-bottom: 18px;
-    letter-spacing: 2px;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
     text-shadow: 0 2px 8px #b0c4de55;
+}
+
+/* Game Info Styling */
+#gameInfo {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+#timer, #minesLeft {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    min-width: 120px;
+    letter-spacing: 0.5px;
+}
+
+#timeDisplay, #minesCount {
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
 }
 
 #gameBoard {
     display: grid;
     gap: 5px;
-    margin: 24px auto 18px auto;
+    margin: 18px auto 12px auto;
     justify-content: center;
     align-items: center;
     background: #eaf6ff;
     border-radius: 16px;
     box-shadow: 0 2px 12px #b0c4de33;
-    padding: 12px;
+    padding: 8px;
+    max-width: 98vw;
+    max-height: 80vh;
+    overflow: auto;
 }
 
 button {
     background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
     color: #fff;
-    padding: 10px 26px;
+    padding: 8px 18px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 1rem;
-    margin: 10px 8px 0 0;
+    font-size: 0.95rem;
+    margin: 8px 6px 0 0;
     box-shadow: 0 2px 8px #b0c4de33;
     transition: background 0.2s, transform 0.1s;
 }
@@ -57,14 +87,14 @@ button:hover {
 }
 
 .cell {
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
     background: #f7fafc;
-    border-radius: 8px;
+    border-radius: 6px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.1rem;
+    font-size: 1rem;
     cursor: pointer;
     border: 2px solid #b0c4de;
     box-shadow: 0 1px 4px #b0c4de22;
@@ -146,8 +176,19 @@ button:hover {
     animation: pop 0.7s;
 }
 
+.winMessage .time-result {
+    font-size: 1.2rem;
+    color: #667eea;
+    margin-top: -10px;
+}
+
 @keyframes pop {
     0% { transform: scale(0.5);}
     70% { transform: scale(1.2);}
     100% { transform: scale(1);}
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translate(-50%, -60%) scale(0.95);}
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1);}
 }

@@ -11,12 +11,20 @@
         <h1>Minesweeper</h1>
         <div id="gameBoard"></div>
         
+   <!-- Game Info -->
+        <div id="gameInfo">
+            <div id="timer">⏱️ <span id="timeDisplay">0</span>s</div>
+            <div id="minesLeft">💣 <span id="minesCount">10</span></div>
+        </div>
+
         <!-- Niveaus Knoppen -->
         <div>
             <button id="easyBtn">Easy</button>
             <button id="mediumBtn">Medium</button>
             <button id="hardBtn">Hard</button>
         </div>
+
+        
 
         <audio id="winAudio" src="win.mp3" preload="auto"></audio>
         <audio id="loseAudio" src="lose.mp3" preload="auto"></audio>
