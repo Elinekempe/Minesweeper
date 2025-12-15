@@ -1,52 +1,119 @@
 @startuml
 start
-:Speler kiest actie;
-if (Klik op cel?) then (ja)
-  if (Cel is al onthuld?) then (ja)
-    :Geen actie;
-  else (nee)
-    if (Cel is gemarkeerd met vlag?) then (ja)
+:Speler start spel;
+:Laad highscores uit localStorage;
+:Initialiseer bord (easy/medium/hard);
+
+repeat
+  :Speler kiest actie;
+  
+  if (Klik op cel?) then (ja)
+    if (Cel is al onthuld?) then (ja)
       :Geen actie;
     else (nee)
-      if (Cel is mijn?) then (ja)
-        :Toon alle mijnen;
-        :Toon verliesmelding;
-        :Speel verlies-geluid;
-        stop
+      if (Cel is gemarkeerd met vlag?) then (ja)
+        :Geen actie;
       else (nee)
-        :Onthul cel;
-        if (Cel is leeg?) then (ja)
-          :Onthul buren;
-        else (nee)
-          ' Geen extra actie nodig
+        if (Eerste klik?) then (ja)
+          :Start timer;
         endif
-        :Update bord;
-        if (Gewonnen?) then (ja)
-          :Toon winmelding;
-          :Speel win-geluid;
-          :Toon confetti;
-          stop
+        
+        if (Cel is mijn?) then (ja)
+          :Stop timer;
+          
+          if (Eerste klik binnen 1 seconde?) then (ja)
+            :Toon alle mijnen;
+            :Toon quick-loss melding;
+            :Wacht 0.9 seconden;
+            :Herstart automatisch;
+            stop
+          else (nee)
+            :Toon alle mijnen;
+            :Toon verliesmelding met tijd;
+            :Speel verlies-geluid;
+            :Wacht op "Opnieuw proberen";
+            :Herstart spel;
+            stop
+          endif
+          
         else (nee)
-          ' Spel gaat verder
+          :Onthul cel;
+          if (Cel is leeg?) then (ja)
+            :Onthul buren recursief;
+          else (nee)
+            ' Toon nummer
+          endif
+          :Update bord;
+          
+          if (Gewonnen?) then (ja)
+            :Stop timer;
+            
+            if (Nieuwe highscore?) then (ja)
+              :Sla highscore op in localStorage;
+              :Update highscore display;
+              :Markeer als nieuw record;
+            endif
+            
+            :Toon winmelding met tijd;
+            if (Nieuw record?) then (ja)
+              :Toon "NIEUW RECORD" bericht;
+              :Speel confetti (200 particles);
+            else (nee)
+              :Speel confetti (120 particles);
+            endif
+            :Speel win-geluid;
+            :Wacht op "Opnieuw spelen";
+            :Herstart spel;
+            stop
+          else (nee)
+            ' Spel gaat verder
+          endif
+        endif
+      endif
+    endif
+    
+  else (nee)
+    if (Plaats vlag? (rechtsklik)) then (ja)
+      if (Cel is al onthuld?) then (ja)
+        :Geen actie;
+      else (nee)
+        :Vlag plaatsen/verwijderen;
+        :Update visueel (geen teller update);
+      endif
+      
+    else (nee)
+      if (Niveau knop? (easy/medium/hard)) then (ja)
+        :Stop timer;
+        :Reset naar 0;
+        :Laad nieuw niveau;
+        note right
+          easy: 8×8, 10 mijnen
+          medium: 12×12, 25 mijnen
+          hard: 16×16, 50 mijnen
+        end note
+        :Initialiseer nieuw bord;
+        :Plaats mijnen random;
+        :Bereken nummers;
+        :Render bord;
+        
+      else (nee)
+        if (Herstart knop?) then (ja)
+          :Stop timer;
+          :Reset naar 0;
+          :Behoud huidige niveau;
+          :Initialiseer nieuw bord;
+          :Plaats mijnen random;
+          :Bereken nummers;
+          :Render bord;
+        else (nee)
+          :Wacht op volgende actie;
         endif
       endif
     endif
   endif
-else (nee)
-  if (Plaats vlag?) then (ja)
-    if (Cel is al onthuld?) then (ja)
-      :Geen actie;
-    else (nee)
-      :Vlag plaatsen/verwijderen;
-    endif
-  else (nee)
-    if (Herstart spel?) then (ja)
-      :Reset bord;
-      :Start nieuw spel;
-    else (nee)
-      :Wacht op volgende actie;
-    endif
-  endif
-endif
+  
+repeat while (Spel actief?) is (ja)
+->nee;
+
 stop
 @enduml
