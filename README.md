@@ -49,4 +49,4 @@ Het spel is gebouwd met de volgende componenten:
 - `ConfettiEffect`: Beheert confetti animaties
 
 ## Auteur
-Eline Kempe - [GitHub](https://github.com/Elinekempe/Minesweeper)
+Eline Kempe - [GitHub](https://github.com/Elinekempe)
