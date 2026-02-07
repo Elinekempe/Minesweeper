@@ -1,9 +1,11 @@
+// Instellingen per moeilijkheidsgraad
 const boardSizes = {
     easy: { rows: 8, cols: 8, mines: 10 },
     medium: { rows: 12, cols: 12, mines: 25 },
     hard: { rows: 16, cols: 16, mines: 50 }
 };
 
+// Spelstatus en -data
 let board = [];
 let revealed = [];
 let flagged = [];
@@ -13,11 +15,13 @@ let mines = 10;
 let gameOver = false;
 let currentLevel = 'easy';
 
+// Timer en flow
 let timerInterval = null;
 let seconds = 0;
 let gameStarted = false;
 let isFirstClick = true;
 
+// UI-elementen
 const gameBoard = document.getElementById('gameBoard');
 const easyBtn = document.getElementById('easyBtn');
 const mediumBtn = document.getElementById('mediumBtn');
@@ -80,6 +84,7 @@ function resetTimer() {
     document.getElementById('timeDisplay').textContent = seconds;
 }
 
+// Start of herstart het spel op een bepaald level
 function init(size = 'easy') {
     currentLevel = size;
     const { rows: r, cols: c, mines: m } = boardSizes[size];
@@ -97,11 +102,13 @@ function init(size = 'easy') {
     resetTimer();
     document.getElementById('minesCount').textContent = mines;
     
+    // Bouw het veld op
     placeMines();
     calculateNumbers();
     renderBoard();
 }
 
+// Plaats willekeurig mijnen op het bord
 function placeMines() {
     let placed = 0;
     while (placed < mines) {
@@ -114,6 +121,7 @@ function placeMines() {
     }
 }
 
+// Vul elk vakje met het aantal aangrenzende mijnen
 function calculateNumbers() {
     for (let x = 0; x < rows; x++) {
         for (let y = 0; y < cols; y++) {
@@ -133,6 +141,7 @@ function calculateNumbers() {
     }
 }
 
+// Tekent het bord en koppelt klik-events
 function renderBoard() {
     gameBoard.innerHTML = '';
     gameBoard.style.gridTemplateRows = `repeat(${rows}, 28px)`;
@@ -158,6 +167,7 @@ function renderBoard() {
                 cell.textContent = '🚩';
             }
             
+            // Linkerklik: cel openen
             cell.onclick = () => {
                 if (!gameOver && !flagged[x][y]) {
                     if (!gameStarted) startTimer();
@@ -165,6 +175,7 @@ function renderBoard() {
                 }
             };
             
+            // Rechterklik: vlag zetten/verwijderen
             cell.oncontextmenu = (e) => {
                 e.preventDefault();
                 if (!gameOver && !revealed[x][y]) {
@@ -194,6 +205,7 @@ function showQuickLoseMessage() {
     }, 1500);
 }
 
+// Open een cel en verspreid openingen bij lege cellen
 function revealCell(x, y) {
     if (revealed[x][y] || flagged[x][y]) return;
     
@@ -202,6 +214,7 @@ function revealCell(x, y) {
     if (board[x][y] === 'M') {
         stopTimer();
         
+        // Snelle herstart bij eerste klik die direct raak is
         if (isFirstClick && seconds <= 1) {
             isFirstClick = false;
             showAllMines();
@@ -247,6 +260,7 @@ function revealCell(x, y) {
     }
 }
 
+// Toon alle mijnen na verlies
 function showAllMines() {
     for (let x = 0; x < rows; x++) {
         for (let y = 0; y < cols; y++) {
@@ -258,6 +272,7 @@ function showAllMines() {
     renderBoard();
 }
 
+// Win wanneer alle niet-mijn vakjes zijn geopend
 function checkWin() {
     for (let x = 0; x < rows; x++) {
         for (let y = 0; y < cols; y++) {
@@ -269,6 +284,7 @@ function checkWin() {
     return true;
 }
 
+// Toon win-melding en bewaar highscore
 function showWinMessage() {
     // Verwijder oude berichten
     const oldMsg = document.querySelector('.winMessage');
@@ -322,6 +338,7 @@ function showWinMessage() {
     }
 }
 
+// Toon verlies-melding
 function showLoseMessage() {
     // Verwijder oude berichten
     const oldMsg = document.querySelector('.winMessage');
